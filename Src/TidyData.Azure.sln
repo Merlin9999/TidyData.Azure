@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TidyData.Azure", "TidyData.Azure\TidyData.Azure.csproj", "{387B117E-83B0-4925-A329-05112C06BC49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TidyData.Azure.Tests", "TidyData.Azure.Tests\TidyData.Azure.Tests.csproj", "{C5AB9DDD-3179-4D17-97A8-468677859457}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{387B117E-83B0-4925-A329-05112C06BC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387B117E-83B0-4925-A329-05112C06BC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387B117E-83B0-4925-A329-05112C06BC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387B117E-83B0-4925-A329-05112C06BC49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5AB9DDD-3179-4D17-97A8-468677859457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5AB9DDD-3179-4D17-97A8-468677859457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5AB9DDD-3179-4D17-97A8-468677859457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5AB9DDD-3179-4D17-97A8-468677859457}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B978B92C-6DB9-485F-BD2B-92C39DA1B3E4}
+	EndGlobalSection
+EndGlobal
