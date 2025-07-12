@@ -1,7 +1,5 @@
 ﻿#nullable disable
-using TidyData.Tests.Azure;
-
-namespace TidyData.Tests.Azure;
+namespace TidyData.Azure.Tests;
 
 public static class AzureBlobStorageExtensions
 {

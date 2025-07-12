@@ -1,14 +1,10 @@
 ﻿ #nullable disable
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
-using Nito.AsyncEx;
+ using System.Diagnostics;
+ using System.Net;
+ using System.Net.NetworkInformation;
+ using Nito.AsyncEx;
 
-namespace TidyUtility.Azure
+ namespace TidyData.Azure.Tests
 {
     public static class AzureStorageEmulatorManager
     {

@@ -1,19 +1,13 @@
 ﻿ #nullable disable
-using System.Threading.Tasks;
-using FluentAssertions;
-using NodaTime;
-using NodaTime.Testing;
-using TidyData.Azure.SnapshotLog;
-using TidyData.SnapshotLog;
-using TidyData.Tests._Shared_Synced;
-using TidyData.Tests._Shared_Synced.Helpers;
-using TidyData.Tests._Shared_Synced.SnapshotLog;
-using TidyData.Tests._Shared_Synced.TestImpl;
-using TidyData.Tests.Azure;
-using TidyUtility.Azure;
-using Xunit;
+ using NodaTime;
+ using NodaTime.Testing;
+ using TidyData.Azure.SnapshotLog;
+ using TidyData.SnapshotLog;
+ using TidyData.Tests._Shared_Synced.Helpers;
+ using TidyData.Tests._Shared_Synced.SnapshotLog;
+ using TidyData.Tests._Shared_Synced.TestImpl;
 
-namespace TidySyncDB.UnitTests.Storage
+ namespace TidyData.Azure.Tests
 {
     public class AzureBlockBlobSnapshotLogTests : IAsyncLifetime
     {

@@ -1,18 +1,12 @@
 ﻿ #nullable disable
-using System.IO;
-using System.Threading.Tasks;
-using FluentAssertions;
-using NodaTime;
-using TidyData.Azure.Storage;
-using TidyData.Storage;
-using TidyData.Tests._Shared_Synced.Helpers;
-using TidyData.Tests._Shared_Synced.TestImpl;
-using TidyData.Tests.Azure;
-using TidyUtility.Azure;
-using TidyUtility.Data.Json;
-using Xunit;
+ using NodaTime;
+ using TidyData.Azure.Storage;
+ using TidyData.Storage;
+ using TidyData.Tests._Shared_Synced.Helpers;
+ using TidyData.Tests._Shared_Synced.TestImpl;
+ using TidyUtility.Data.Json;
 
-namespace TidySyncDB.UnitTests.Storage.IndexLock
+ namespace TidyData.Azure.Tests.Storage.IndexLock
 {
     public class AzureBlockBlobIndexLockTests : IAsyncLifetime
     {

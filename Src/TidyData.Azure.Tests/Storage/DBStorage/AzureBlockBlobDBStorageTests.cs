@@ -1,21 +1,14 @@
 ﻿ #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using NodaTime;
-using TidyData.Azure.Storage;
-using TidyData.SnapshotLog;
-using TidyData.Storage;
-using TidyData.Tests._Shared_Synced.Helpers;
-using TidyData.Tests._Shared_Synced.TestImpl;
-using TidyData.Tests._Shared_Synced.TestModel;
-using TidyData.Tests.Azure;
-using TidyUtility.Azure;
-using TidyUtility.Data.Json;
-using Xunit;
+ using NodaTime;
+ using TidyData.Azure.Storage;
+ using TidyData.SnapshotLog;
+ using TidyData.Storage;
+ using TidyData.Tests._Shared_Synced.Helpers;
+ using TidyData.Tests._Shared_Synced.TestImpl;
+ using TidyData.Tests._Shared_Synced.TestModel;
+ using TidyUtility.Data.Json;
 
-namespace TidySyncDB.UnitTests.Storage.DBStorage
+ namespace TidyData.Azure.Tests.Storage.DBStorage
 {
     public class AzureBlockBlobDBStorageTests : IAsyncLifetime
     {
