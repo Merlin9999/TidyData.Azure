@@ -1,10 +1,11 @@
 ﻿ #nullable disable
-using NodaTime;
-using TidySyncDB.Storage;
-using TidyUtility.Serializer;
-using TidyUtility.Storage;
+ using NodaTime;
+ using TidyData.Azure.SnapshotLog;
+ using TidyData.SnapshotLog;
+ using TidyData.Storage;
+ using TidyUtility.Data.Json;
 
-namespace TidySyncDB.Azure.Storage
+ namespace TidyData.Azure.Storage
 {
     public sealed class AzureBlockBlobDBStorage<T> : DBStorageBase<T>
         where T : class, new()

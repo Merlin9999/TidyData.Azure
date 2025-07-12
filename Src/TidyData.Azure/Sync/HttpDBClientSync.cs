@@ -1,15 +1,9 @@
 ﻿ #nullable disable
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using NodaTime;
-using TidySyncDB.Sync;
-using TidyUtility;
-using TidyUtility.Extensions;
-using TidyUtility.Serializer;
+ using TidyData.Sync;
+ using TidyUtility.Core.Extensions;
+ using TidyUtility.Data.Json;
 
-namespace TidySyncDB.Azure.Sync
+ namespace TidyData.Azure.Sync
 {
     public class HttpDBClientSync : IDBClientSync
     {

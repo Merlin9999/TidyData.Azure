@@ -7,7 +7,7 @@ public static class AzureBlobStorageExtensions
 {
     public static string BuildContainerName(this string identifier)
     {
-        return $"tidytime-{identifier.ToLower()}";
+        return $"tidydata-{identifier.ToLower()}";
     }
 
 }

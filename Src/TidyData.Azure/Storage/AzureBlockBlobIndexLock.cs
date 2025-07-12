@@ -1,17 +1,14 @@
 ﻿ #nullable disable
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Azure;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using NodaTime;
-using TidySyncDB.Storage;
-using TidyUtility.Serializer;
+ using System.Net;
+ using System.Text;
+ using Azure;
+ using Azure.Storage.Blobs;
+ using Azure.Storage.Blobs.Models;
+ using NodaTime;
+ using TidyData.Storage;
+ using TidyUtility.Data.Json;
 
-namespace TidySyncDB.Azure.Storage
+ namespace TidyData.Azure.Storage
 {
     // See:
     //     https://docs.microsoft.com/en-us/azure/storage/blobs/concurrency-manage?tabs=dotnet

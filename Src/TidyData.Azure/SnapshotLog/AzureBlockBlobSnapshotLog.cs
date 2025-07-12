@@ -1,4 +1,4 @@
-﻿ #nullable disable
+﻿#nullable disable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +10,11 @@ using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using NodaTime;
-using TidyUtility;
-using TidyUtility.Serializer;
-using TidyUtility.Storage;
+using TidyData.SnapshotLog;
+using TidyUtility.Core;
+using TidyUtility.Data.Json;
 
-namespace TidySyncDB.Azure.Storage
+namespace TidyData.Azure.SnapshotLog
 {
     // Basic Docs:
     //     https://github.com/Azure/azure-sdk-for-net/blob/Azure.Storage.Blobs_12.6.0/sdk/storage/Azure.Storage.Blobs/README.md
@@ -34,22 +34,22 @@ namespace TidySyncDB.Azure.Storage
             ISerializer serializer = null, IClock clock = null)
             : base(snapshotLogSettings, serializer, clock)
         {
-            this._serviceClient = new BlobServiceClient(storageConnectionString);
-            this._container = this._serviceClient.GetBlobContainerClient(blobContainerName);
-            this._snapshotPath = snapshotPath;
+            _serviceClient = new BlobServiceClient(storageConnectionString);
+            _container = _serviceClient.GetBlobContainerClient(blobContainerName);
+            _snapshotPath = snapshotPath;
         }
 
         protected override async Task<string> SaveNewSnapshotAsync(T instanceToSave)
         {
-            await this.EnsureContainerExists();
+            await EnsureContainerExists();
 
             // NEW:
 
             string snapshotName = this.BuildSnapshotName();
-            string blockBlobName = this.BuildBlockBlobName(snapshotName);
+            string blockBlobName = BuildBlockBlobName(snapshotName);
             string serializedData = this.Serializer.Serialize(instanceToSave);
 
-            BlobClient blobClient = this._container.GetBlobClient($"{this._snapshotPath}/{blockBlobName}");
+            BlobClient blobClient = _container.GetBlobClient($"{_snapshotPath}/{blockBlobName}");
             using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(serializedData)))
             {
                 await blobClient.UploadAsync(memStream);
@@ -69,13 +69,13 @@ namespace TidySyncDB.Azure.Storage
 
         public override async Task<T> LoadSnapshotAsync(string snapshotName)
         {
-            await this.EnsureContainerExists();
+            await EnsureContainerExists();
 
             // NEW:
 
-            string blockBlobName = this.BuildBlockBlobName(snapshotName);
+            string blockBlobName = BuildBlockBlobName(snapshotName);
 
-            BlobClient blobClient = this._container.GetBlobClient($"{this._snapshotPath}/{blockBlobName}");
+            BlobClient blobClient = _container.GetBlobClient($"{_snapshotPath}/{blockBlobName}");
 
             string blobAsText;
             try
@@ -88,7 +88,7 @@ namespace TidySyncDB.Azure.Storage
             }
             catch (RequestFailedException exc) when (exc.Status == (int)HttpStatusCode.NotFound && exc.ErrorCode == "BlobNotFound")
             {
-                throw new SnapshotNotFoundException($"Unable to read block blob at path \"{this._snapshotPath}\" named \"{snapshotName}\".", exc);
+                throw new SnapshotNotFoundException($"Unable to read block blob at path \"{_snapshotPath}\" named \"{snapshotName}\".", exc);
             }
 
             // OLD:
@@ -113,34 +113,34 @@ namespace TidySyncDB.Azure.Storage
 
         public override async Task DeleteAsync(string snapshotName)
         {
-            await this.EnsureContainerExists();
-            await this.DeleteBlockBlobAsync(this.BuildBlockBlobName(snapshotName));
+            await EnsureContainerExists();
+            await DeleteBlockBlobAsync(BuildBlockBlobName(snapshotName));
         }
 
         public override async Task DeleteAllAsync()
         {
-            await this.EnsureContainerExists();
+            await EnsureContainerExists();
 
-            IEnumerable<string> savedFileNames = await this.GetSavedBlockBlobsAsync();
+            IEnumerable<string> savedFileNames = await GetSavedBlockBlobsAsync();
             foreach (string fileName in savedFileNames)
-                await this.DeleteBlockBlobAsync(fileName);
+                await DeleteBlockBlobAsync(fileName);
         }
 
         public override async Task DeleteAllEligibleForAutoDeletionAsync()
         {
-            await this.EnsureContainerExists();
+            await EnsureContainerExists();
 
             IEnumerable<string> snapshotsEligibleForDeletion = await this.GetAllSnapshotNamesEligibleForAutoDeletionAsync();
 
             foreach (string snapshotName in snapshotsEligibleForDeletion)
-                await this.DeleteBlockBlobAsync(this.BuildBlockBlobName(snapshotName));
+                await DeleteBlockBlobAsync(BuildBlockBlobName(snapshotName));
         }
 
         public override async Task<IEnumerable<string>> GetSavedSnapshotNamesAsync()
         {
-            await this.EnsureContainerExists();
+            await EnsureContainerExists();
 
-            return (await this.GetSavedBlockBlobsAsync())
+            return (await GetSavedBlockBlobsAsync())
                 .Select(Path.GetFileNameWithoutExtension)
                 .ToList();
 
@@ -151,7 +151,7 @@ namespace TidySyncDB.Azure.Storage
             // NEW:
 
             IEnumerable<string> fullPaths = Enumerable.Empty<string>();
-            AsyncPageable<BlobItem> blobsAsync = this._container.GetBlobsAsync(prefix: this._snapshotPath);
+            AsyncPageable<BlobItem> blobsAsync = _container.GetBlobsAsync(prefix: _snapshotPath);
             IAsyncEnumerator<BlobItem> blobEnumerator = blobsAsync.GetAsyncEnumerator();
             
             try
@@ -193,7 +193,7 @@ namespace TidySyncDB.Azure.Storage
         {
             // NEW:
 
-            BlobClient blobClient = this._container.GetBlobClient($"{this._snapshotPath}/{fileName}");
+            BlobClient blobClient = _container.GetBlobClient($"{_snapshotPath}/{fileName}");
             await blobClient.DeleteIfExistsAsync();
             
 
@@ -228,15 +228,15 @@ namespace TidySyncDB.Azure.Storage
 
         private async Task EnsureContainerExists()
         {
-            if (!this._containerKnownToExist)
+            if (!_containerKnownToExist)
             {
                 //NEW:
-                await this._container.CreateIfNotExistsAsync();
+                await _container.CreateIfNotExistsAsync();
 
                 // OLD:
                 //await this._container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, null, null);
                 
-                this._containerKnownToExist = true;
+                _containerKnownToExist = true;
             }
         }
     }
