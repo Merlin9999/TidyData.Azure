@@ -30,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="_Shared-Synced\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TidyData.Azure\TidyData.Azure.csproj" />
   </ItemGroup>
 

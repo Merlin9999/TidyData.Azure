@@ -2,12 +2,13 @@
  using NodaTime;
  using NodaTime.Testing;
  using TidyData.Azure.SnapshotLog;
+ using TidyData.Azure.Tests.Helpers;
  using TidyData.SnapshotLog;
  using TidyData.Tests._Shared_Synced.Helpers;
  using TidyData.Tests._Shared_Synced.SnapshotLog;
  using TidyData.Tests._Shared_Synced.TestImpl;
 
- namespace TidyData.Azure.Tests
+ namespace TidyData.Azure.Tests.SnapshotLog
 {
     public class AzureBlockBlobSnapshotLogTests : IAsyncLifetime
     {
@@ -18,7 +19,8 @@
 
         public async Task InitializeAsync()
         {
-            await AzureStorageEmulatorManager.EnsureStorageEmulatorIsStartedAsync(TestFolders.AzuriteFolder);
+            if (!EnvironmentHelpers.IsRunningOnServer())
+                await AzureStorageEmulatorManager.EnsureStorageEmulatorIsStartedAsync(TestFolders.AzuriteFolder);
         }
 
         public Task DisposeAsync() { return Task.CompletedTask; }
@@ -84,6 +86,9 @@
                 SnapshotLogName = snapshotLogName,
                 FileExtension = this.FileSetExtension,
             };
+
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemorySnapshotLog<ImmutableData>(snapshotLogSettings);
             return new AzureBlockBlobSnapshotLog<ImmutableData>(snapshotLogSettings, StorageConnectionString, TestContainerName, this._fileSetRootFolderPath);
         }
 
@@ -96,6 +101,9 @@
                 MinSnapshotCountBeforeEligibleForDeletion = minSnapshotCountBeforeEligibleForDeletion,
                 FileExtension = this.FileSetExtension,
             };
+
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemorySnapshotLog<ImmutableData>(snapshotLogSettings);
             return new AzureBlockBlobSnapshotLog<ImmutableData>(snapshotLogSettings, StorageConnectionString, TestContainerName, this._fileSetRootFolderPath);
         }
 
@@ -108,6 +116,9 @@
                 MaxSnapshotAgeToPreserveAll = maxSnapshotAgeToPreserveAll,
                 FileExtension = this.FileSetExtension,
             };
+
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemorySnapshotLog<ImmutableData>(snapshotLogSettings, clock: fakeClock);
             return new AzureBlockBlobSnapshotLog<ImmutableData>(snapshotLogSettings, StorageConnectionString, TestContainerName, this._fileSetRootFolderPath, clock: fakeClock);
         }
 
@@ -122,6 +133,9 @@
                 MaxSnapshotAgeToPreserveAll = maxSnapshotAgeToPreserveAll,
                 FileExtension = this.FileSetExtension,
             };
+
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemorySnapshotLog<ImmutableData>(snapshotLogSettings, clock: fakeClock);
             return new AzureBlockBlobSnapshotLog<ImmutableData>(snapshotLogSettings, StorageConnectionString, TestContainerName, this._fileSetRootFolderPath, clock: fakeClock);
         }
 
@@ -138,8 +152,10 @@
                 MaxSnapshotAgeToPreserveOnePerDay = maxSnapshotAgeToPreserveOnePerDay, 
                 FileExtension = this.FileSetExtension,
             };
+
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemorySnapshotLog<ImmutableData>(snapshotLogSettings, clock: fakeClock);
             return new AzureBlockBlobSnapshotLog<ImmutableData>(snapshotLogSettings, StorageConnectionString, TestContainerName, this._fileSetRootFolderPath, clock: fakeClock);
         }
-
     }
 }

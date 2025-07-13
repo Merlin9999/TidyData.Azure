@@ -1,6 +1,7 @@
 ﻿ #nullable disable
  using NodaTime;
  using TidyData.Azure.Storage;
+ using TidyData.Azure.Tests.Helpers;
  using TidyData.SnapshotLog;
  using TidyData.Storage;
  using TidyData.Tests._Shared_Synced.Helpers;
@@ -8,7 +9,7 @@
  using TidyData.Tests._Shared_Synced.TestModel;
  using TidyUtility.Data.Json;
 
- namespace TidyData.Azure.Tests.Storage.DBStorage
+ namespace TidyData.Azure.Tests.Storage
 {
     public class AzureBlockBlobDBStorageTests : IAsyncLifetime
     {
@@ -19,7 +20,8 @@
 
         public async Task InitializeAsync()
         {
-            await AzureStorageEmulatorManager.EnsureStorageEmulatorIsStartedAsync(TestFolders.AzuriteFolder);
+            if (!EnvironmentHelpers.IsRunningOnServer())
+                await AzureStorageEmulatorManager.EnsureStorageEmulatorIsStartedAsync(TestFolders.AzuriteFolder);
         }
 
         public Task DisposeAsync() { return Task.CompletedTask; }
@@ -56,10 +58,12 @@
             {
                 SnapshotLogName = snapshotLogName,
                 MinSnapshotCountBeforeEligibleForDeletion = minSnapshotCountBeforeEligibleForDeletion,
-                MaxSnapshotAgeToPreserveAll = maxSnapshotAgeToPreserveAll ?? Duration.Zero, 
+                MaxSnapshotAgeToPreserveAll = maxSnapshotAgeToPreserveAll ?? Duration.Zero,
                 FileExtension = this.BlockBlobExtension,
             };
 
+            if (EnvironmentHelpers.IsRunningOnServer())
+                return new MemoryDBStorage<TestDataModel>(snapshotLogSettings, serializer, clock);
             return new AzureBlockBlobDBStorage<TestDataModel>(snapshotLogSettings, StorageConnectionString, TestContainerName, DBStoragePath, serializer, clock);
         }
     }
