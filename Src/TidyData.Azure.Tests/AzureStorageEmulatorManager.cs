@@ -75,7 +75,7 @@
             return new ProcessStartInfo
             {
                 FileName = @"powershell",
-                Arguments = $"azurite.ps1 --location \"{workingFolder}\" --debug \"{logFilePath}\"",
+                Arguments = $"azurite.ps1 --location \"{workingFolder}\" --debug \"{logFilePath}\" --skipApiVersionCheck",
                 UseShellExecute = true,
             };
         }
