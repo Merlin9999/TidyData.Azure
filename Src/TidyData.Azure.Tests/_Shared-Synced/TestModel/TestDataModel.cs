@@ -28,12 +28,12 @@ public class TestDataModel : IDataModel
     }
 }
 
-public class ClientTestDataModel : TestDataModel, ISyncClientDataModel
+public class SyncClientTestDataModel : TestDataModel, ISyncClientDataModel
 {
     public Instant? LastSync { get; set; }
 }
 
-public class ServerTestDataModel : TestDataModel, ISyncServerDataModel
+public class SyncServerTestDataModel : TestDataModel, ISyncServerDataModel
 {
     private volatile ImmutableDictionary<Guid, DeviceInformation> _remoteDeviceLookup;
 
